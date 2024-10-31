@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from src.schemas.prediction_schema import PredictSchemaRequest, PredictSchemaResponse
 
 
