@@ -1,3 +1,4 @@
+import pandas as pd
 from pydantic import BaseModel, Field
 
 
@@ -7,14 +8,15 @@ class PredictSchemaRequest(BaseModel):
     petalLengthCm : int = Field(..., description="Comprimento da pétala em centímetros.")
     petalWidthCm : float = Field(..., description="Comprimento da pétala em centímetros.")
     
-    def to_array2d(self):
-        request_dataframe = [[
-            self.sepalLengthCm,
-            self.sepalWidthCm,
-            self.petalLengthCm,
-            self.petalWidthCm,
-        ]]
-        return request_dataframe
+    def to_dataframe(self):
+        request_dataframe = {
+            "SepalLengthCm": self.sepalLengthCm,
+            "SepalWidthCm": self.sepalWidthCm,
+            "PetalLengthCm": self.petalLengthCm,
+            "PetalWidthCm": self.petalWidthCm,
+        }
+        prediction_df = pd.DataFrame([request_dataframe])
+        return prediction_df
 
 
 class PredictSchemaResponse(BaseModel):

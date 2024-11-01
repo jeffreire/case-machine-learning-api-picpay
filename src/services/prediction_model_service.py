@@ -1,3 +1,5 @@
+import pandas as pd
+
 from src.schemas.prediction_schema import PredictSchemaRequest, PredictSchemaResponse
 
 
@@ -11,6 +13,6 @@ class PredictModelService:
         }
     
     def predict(self, request : PredictSchemaRequest):
-        input_data = request.to_array2d()
+        input_data = request.to_dataframe()
         category_predict = self.model.predict(input_data)[0]
         return PredictSchemaResponse(category=self.labels[category_predict])

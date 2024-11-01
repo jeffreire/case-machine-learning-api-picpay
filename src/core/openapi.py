@@ -3,9 +3,6 @@ from fastapi.openapi.utils import get_openapi
 
 
 def add_custom_openapi(app: FastAPI) -> None:
-    if app.openapi_schema:
-        return
-    
     openapi_schema = get_openapi(
         title="Iris Species Prediction API",
         version="1.0.0",

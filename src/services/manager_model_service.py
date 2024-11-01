@@ -4,6 +4,8 @@ import joblib
 
 
 class ManagerModelService:
+    def __init__(self):
+        self.pickle_model = None
 
     def load_model(self, model) -> bool:
         if model.filename.endswith('.pkl'):

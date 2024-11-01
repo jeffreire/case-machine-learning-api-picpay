@@ -12,6 +12,10 @@ prediction_schema_service = None
 def get_manager_model():
     return manager_model_service
 
+def get_prediction_model_service():
+    return prediction_schema_service
+
+
 @router.post("/model/load/", status_code=status.HTTP_200_OK)
 def load_model(
     model: UploadFile = File(...),
@@ -36,7 +40,7 @@ def load_model(
 @router.post("/model/predict/", response_model=PredictSchemaResponse)
 def predict_model(
     predict_model_request: PredictSchemaRequest,
-    prediction_model_service: PredictModelService = Depends(lambda: prediction_schema_service)
+    prediction_model_service: PredictModelService = Depends(get_prediction_model_service)
 ) -> PredictSchemaResponse:
     if prediction_model_service is None:
         raise HTTPException(
