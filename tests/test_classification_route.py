@@ -6,19 +6,20 @@ from src.main import app
 
 client = TestClient(app)
 
+
 def test_predict_model_no_model_loaded():
-    prediction_request = {
-        "sepalLengthCm": 1.0,
-        "sepalWidthCm": 2.57,
-        "petalLengthCm": 4.0,
-        "petalWidthCm": 1.0
+    classification_request = {
+        "sepal_length_cm": 1.0,
+        "sepal_width_cm": 2.57,
+        "petal_length_cm": 4.0,
+        "petal_width_cm": 1.0
     }
     
-    response = client.post("/model/predict/", json=prediction_request)
+    response = client.post("/model/classify/", json=classification_request)
 
     assert response.status_code == 503
     assert response.json() == {
-        "detail": "O modelo de predição não está carregado. Carregue o modelo antes de fazer previsões."
+        "detail": "O modelo de classificação não está carregado. Carregue o modelo antes de fazer as classificações."
     }
 
 def test_load_model_success():
@@ -44,30 +45,31 @@ def test_predict_model_success():
     with open("./tests/models/Iris.pkl", "rb") as model_file:
         client.post("/model/load/", files={"model": model_file})
     
-    prediction_request = {
-        "sepalLengthCm": 1.0,
-        "sepalWidthCm": 2.57,
-        "petalLengthCm": 4.0,
-        "petalWidthCm": 1.0
+    classification_request = {
+        "sepal_length_cm": 1.0,
+        "sepal_width_cm": 2.57,
+        "petal_length_cm": 4.0,
+        "petal_width_cm": 1.0
     }
     
-    response = client.post("/model/predict/", json=prediction_request)
+    response = client.post("/model/classify/", json=classification_request)
 
     assert response.status_code == 200
     assert "category" in response.text
     assert '{"category":"Iris-versicolor"}' == response.text
 
 def test_predict_model_internal_server_error():
-    prediction_request = {
-        "sepalLengthCm": 1.0,
-        "sepalWidthCm": 2.57,
-        "petalLengthCm": 4.0,
-        "petalWidthCm": 1.0
+    classification_request = {
+        "sepal_length_cm": 1.0,
+        "sepal_width_cm": 2.57,
+        "petal_length_cm": 4.0,
+        "petal_width_cm": 1.0
     }
-    with patch("src.services.prediction_model_service.PredictModelService.predict", side_effect=Exception("Erro simulado")):
-        response = client.post("/model/predict/", json=prediction_request)
+    
+    with patch("src.services.classification_model_service.ClassificationModelService.classify", side_effect=Exception("Erro simulado")):
+        response = client.post("/model/classify/", json=classification_request)
         
         assert response.status_code == 500
         assert response.json() == {
-            "detail": "Erro ao realizar a previsão: Erro simulado"
+            "detail": "Erro ao realizar a classificação: Erro simulado"
         }

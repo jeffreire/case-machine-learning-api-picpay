@@ -4,9 +4,9 @@ from fastapi.openapi.utils import get_openapi
 
 def add_custom_openapi(app: FastAPI) -> None:
     openapi_schema = get_openapi(
-        title="Iris Species Prediction API",
+        title="Iris Species Classification API",
         version="1.0.0",
-        description="Iris Species Prediction API",
+        description="Iris Species Classification API",
         routes=app.routes,
         servers=[{"url": "http://localhost:8000"}],
     )
