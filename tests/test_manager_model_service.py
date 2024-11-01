@@ -1,14 +1,11 @@
 import unittest
-from datetime import datetime
-from unittest.mock import MagicMock, Mock
+from unittest.mock import Mock
 
 from src.schemas.classification_schema import (
     ClassificationSchemaRequest,
     ClassificationSchemaResponse,
 )
-from src.services.classification_model_service import (
-    ClassificationModelService,  # Update with your actual import path
-)
+from src.services.classification_model_service import ClassificationModelService
 
 
 class TestClassificationModelService(unittest.TestCase):
