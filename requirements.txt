@@ -2,7 +2,7 @@ fastapi
 uvicorn
 pytest
 mongomock
-numpy
 joblib
 python-multipart
 scikit-learn
+pandas
